@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+used api and bloc pattern
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
