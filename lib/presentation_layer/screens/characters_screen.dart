@@ -1,6 +1,7 @@
 import 'package:bloc_pattern_project/business_logic_layer/cubit/characters_cubit.dart';
 import 'package:bloc_pattern_project/constants/constants.dart';
 import 'package:bloc_pattern_project/constants/my_colors.dart';
+import 'package:bloc_pattern_project/data_layer/apis/character_api.dart';
 import 'package:bloc_pattern_project/data_layer/models/characters_model.dart';
 import 'package:bloc_pattern_project/presentation_layer/widgets/build_character_item.dart';
 import 'package:bloc_pattern_project/presentation_layer/widgets/no_internet_widget.dart';
@@ -26,6 +27,11 @@ class _CharactersScreenState extends State<CharactersScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<CharactersCubit>(context).retrieveAllCharacters();
+  }
+
+  /// TODO: On refresh Function
+  Future<dynamic> refreshCharacters(BuildContext context) async {
+   return CharacterApi().getAllCharacters();
   }
 
   /// TODO : Bloc Builder Widget
@@ -179,7 +185,10 @@ class _CharactersScreenState extends State<CharactersScreen> {
         ) {
           final bool connected = connectivity != ConnectivityResult.none;
           if (connected) {
-            return blocBuilderWidget();
+            return RefreshIndicator(
+              onRefresh: ()=> refreshCharacters(context),
+              child: blocBuilderWidget(),
+            );
           } else {
             return const NoInternetWidget();
           }
